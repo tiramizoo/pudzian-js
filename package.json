@@ -1,0 +1,14 @@
+{
+  "author": "Mateusz Juraszek <meceo00@gmail.com>",
+  "name": "pudzian",
+  "description": "Simple 3d bin packer",
+  "version": "0.0.1",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": ">= 1.0.0"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

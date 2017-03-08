@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="lib/pudzian.js"></script>
+    <script src="lib/pudzianDrawer.js"></script>
+  </head>
+  <body style="width: 1024px; height: 600px; margin: auto;">
+    <h2 id="stats"></h1>
+    <canvas id="myCanvas" width=18000 height="14000"></canvas>
+
+    <script type="text/javascript">
+        window.onload = init;
+        function init() {
+          // pudzian = new Pudzian({width: 200, height: 200, length: 80, weight: 100});
+
+          // var fits = pudzian.fit([
+          //     { width: 30, height: 100, length: 80, weight: 1 },
+          //     { width: 20, height: 10, length: 80, weight: 1 },
+          //     { width: 10, height: 30, length: 80, weight: 27 },
+          //     { width: 80, height: 20, length: 30, weight: 1 },
+          //     { width: 30, height: 100, length: 80, weight: 1 },
+          //     { width: 20, height: 10, length: 80, weight: 1 },
+          //     { width: 10, height: 30, length: 80, weight: 1 },
+          //     { width: 80, height: 20, length: 30, weight: 1 },
+	         //    { width: 10, height: 10, length: 10, weight: 1 },
+          //     { width: 20, height: 10, length: 80, weight: 1 },
+          //     { width: 10, height: 30, length: 80, weight: 1 },
+          //     { width: 80, height: 20, length: 30, weight: 1 },
+          //     { width: 30, height: 100, length: 80, weight: 1 },
+          //     { width: 20, height: 10, length: 80, weight: 1 },
+          //     { width: 10, height: 30, length: 80, weight: 27 },
+          //     { width: 80, height: 20, length: 30, weight: 1 },
+	         //    { width: 10, height: 10, length: 10, weight: 1 },
+          //     { width: 10, height: 10, length: 10, weight: 1 },
+          //     { width: 10, height: 10, length: 10, weight: 1 },
+          //     { width: 10, height: 10, length: 10, weight: 1 },
+          // ]);
+
+          var van   = {width: 150, height: 180, length: 350, weight: 1000};
+          pudzian = new Pudzian(van);
+
+          var fits = pudzian.fit([
+              { width: 5, height:  4, length: 250, weight: 1, non_rotatable: true },
+              { width: 90, height: 1, length: 180, weight: 5, non_rotatable: true},
+              { width: 90, height: 1, length: 180, weight: 5, non_rotatable: true },
+              { width: 90, height: 1, length: 180, weight: 5, non_rotatable: true },
+              { width: 90, height: 1, length: 180, weight: 5, non_rotatable: true },
+
+          ]);
+
+          var binVolume = pudzian.bin().width * pudzian.bin().height * pudzian.bin().length;
+          var itemsVolume = function () {
+              return pudzian.items().reduce(function (sum, item) {
+                  return sum += item.width * item.height * item.length;
+              }, 0);
+          }();
+          var itemsWeight = function () {
+              return pudzian.items().reduce(function (sum, item) {
+                  return sum += item.weight;
+              }, 0);
+          }();
+          var waste = (1 - itemsVolume/binVolume) * 100;
+          var statsTag = document.getElementById("stats");
+          statsTag.innerHTML = "Fits: " + fits + "<br>Bin volume: " + binVolume + ", items volume: " + itemsVolume +
+                               "<br>Bin max weight: " + pudzian.bin().weight + ", items weight: " + itemsWeight +
+                               "<br>waste: " + waste.toFixed() + "%";
+
+          var pudzianDrawer = new PudzianDrawer({
+              root: {x: 100, y: 100, z: 100, w: pudzian.bin().width, h: pudzian.bin().height, l: pudzian.bin().length},
+              canvasID: "myCanvas"
+          });
+
+          color = [ "red", "blue", "green", "yellow", "bronze", "black", "blue", "red" ];
+          for (var i=0; i < pudzian.items().length; i++) {
+            var item = pudzian.items()[i];
+            pudzianDrawer.drawBox(item.x, item.y, item.z, item.width, item.height, item.length, color[i]);
+          };
+        };
+    </script>
+  </body>
+</html>
