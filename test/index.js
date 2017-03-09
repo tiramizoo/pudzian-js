@@ -74,9 +74,9 @@ describe("pudzian", function () {
         var pudzian = new Pudzian({ width: 100, height: 100, length: 40, weight: 100 });
         assert(pudzian.fit([
             { width: 30, height: 100, length: 80, weight: 1 },
-            { width: 20, height: 10, length: 80, weight: 1 },
+            { width: 20, height: 10,  length: 80, weight: 1 },
             { width: 10, height: 100, length: 80, weight: 1 },
-            { width: 80, height: 20, length: 30, weight: 1 }
+            { width: 80, height: 20,  length: 30, weight: 1 }
         ]));
     });
 
@@ -88,5 +88,18 @@ describe("pudzian", function () {
     it("should be able to accept item which is non rotatable item (rotate horizontal axis)", function () {
         var pudzian = new Pudzian({ width: 100, height: 100, length: 40, weight: 100 });
         assert(pudzian.fit([{ width: 40, height: 100, length: 100, weight: 1, non_rotatable: true }]));
+    });
+
+    it("should be able to accept items set 1", function () {
+        var pudzian = new Pudzian({width: 150, height: 180, length: 350, weight: 1000});
+
+        var fits = pudzian.fit([
+          { width: 90, height: 1, length: 180, weight: 5, non_rotatable: false },
+          { width: 90, height: 1, length: 180, weight: 5, non_rotatable: false },
+          { width: 90, height: 1, length: 180, weight: 5, non_rotatable: false },
+          { width: 90, height: 1, length: 180, weight: 5, non_rotatable: false },
+          { width: 5, height:  4, length: 250, weight: 1, non_rotatable: false },
+        ]);
+        assert(fits);
     });
 });
